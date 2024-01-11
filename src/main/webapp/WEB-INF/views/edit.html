@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/city/editCity}" method="post" novalidate="novalidate" th:object="${editCity}">
+    <label>tên</label>
+
+    <input type="text" th:field="*{name}"><br>
+    <label>Quốc gia</label>
+    <input type="text" th:field="*{nation}"><br>
+    <label>Diện tích</label>
+    <input type="text" th:field="*{acreage}"><br>
+    <label>Dân số</label>
+    <input type="text" th:field="*{population}"><br>
+    <label>GDP</label>
+    <input type="text" th:field="*{GDP}"><br>
+    <label>Mô tả</label>
+    <input type="text" th:field="*{describes}">
+    <input type="submit" value="edit">
+</form>
+</body>
+</html>
