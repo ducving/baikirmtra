@@ -5,9 +5,12 @@
     <title>Title</title>
 </head>
 <body>
-<form th:action="@{/city/editCity}" method="post" novalidate="novalidate" th:object="${editCity}">
+<div th:each="row : ${listErr}">
+    <h1 th:text="${row.getDefaultMessage()}"></h1>
+</div>
+<form th:action="@{/city/edit}" method="post" novalidate="novalidate" th:object="${edit}">
     <label>tên</label>
-
+    <input type="hidden" th:field="*{id}">
     <input type="text" th:field="*{name}"><br>
     <label>Quốc gia</label>
     <input type="text" th:field="*{nation}"><br>

@@ -3,10 +3,14 @@ package com.example.demo.controller;
 import com.example.demo.model.City;
 import com.example.demo.service.ICityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -28,7 +32,12 @@ public class HomeController {
         return modelAndView;
     }
     @PostMapping("/save")
-    public ModelAndView save(City city){
+    public ModelAndView save(@Valid City city, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            ModelAndView modelAndView= new ModelAndView("create");
+            modelAndView.addObject("listErr",bindingResult.getAllErrors());
+            return modelAndView;
+        }
         ModelAndView modelAndView = new ModelAndView("redirect:/city");
         iCityService.save(city);
         return modelAndView;
@@ -36,13 +45,20 @@ public class HomeController {
     @GetMapping("{id}/edit")
     public ModelAndView showEdit(@PathVariable int id){
         ModelAndView modelAndView = new ModelAndView("edit");
-        modelAndView.addObject("editCity",iCityService.findById(id).get());
+        modelAndView.addObject("edit",iCityService.findById(id).get());
         return modelAndView;
     }
-    @PostMapping("/editCity")
-    public ModelAndView edit(City city){
+    @PostMapping("/edit")
+    public ModelAndView edit(@Validated  City city, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            ModelAndView modelAndView= new ModelAndView("create");
+            modelAndView.addObject("listErr",bindingResult.getAllErrors());
+            return modelAndView;
+        }
         ModelAndView modelAndView=new ModelAndView("redirect:/city");
-        iCityService.save(city);
+        iCityService.save(new City(city.getId(),city.getName(),city.getNation(),city.getAcreage(),city.getPopulation(),city.getGDP(),city.getDescribes()));
+        List<City> cities = iCityService.findAll();
+        modelAndView.addObject("edit",cities);
         return modelAndView;
     }
     @GetMapping("/{id}/delete")

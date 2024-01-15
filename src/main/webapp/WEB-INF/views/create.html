@@ -5,6 +5,9 @@
     <title>Title</title>
 </head>
 <body>
+<div th:each="row : ${listErr}">
+    <h1 th:text="${row.getDefaultMessage()}"></h1>
+</div>
 <form th:action="@{/city/save}" method="post" novalidate="novalidate" th:object="${city}">
     <label>tên</label>
     <input type="text" th:field="*{name}"><br>
